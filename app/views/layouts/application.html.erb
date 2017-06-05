@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokedex</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+</head>
+<body class="<%= "#{controller_name}-#{action_name}" %>">
+    <div class="container">
+        <header>
+            <% links = [
+                { name: 'Pokemons', url: pokemons_path },
+                { name: 'Types', url: types_path },
+                { name: 'Attaques', url: moves_path }
+            ] %>
+            <% if user_signed_in? %>
+                Connecté en tant nque <%= current_user.email %>
+                <%= link_to 'Se déconnecté', destroy_user_session_path , method: :delete %>
+            <% else %>
+                <%= link_to 'Se connecté', new_user_session_path%>
+            <% end %>
+        </header>
+
+        <% flash.each do |name, msg| %>
+            <div class="alert alert-info alert-<%= name %>">
+                <a class="close" data-dismiss="alert"></a>
+                <%= content_tag :div, msg, id: "flash_#{name}" %>
+            </div>
+        <% end %>
+
+        <%= yield %>
+    </div>
+</body>
+</html>
